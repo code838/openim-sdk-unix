@@ -1,6 +1,6 @@
 # 更新日志
 
-## 0.2.3（待发布）
+## 0.2.3（2026-11-10）
 
 ### 新增
 
@@ -11,13 +11,12 @@
 
 - 调用时省略或传入空白 `operationID` 会自动生成唯一请求标识，避免原生接口参数错误；显式传入的有效标识保持不变。
 
-- 移除历史消息请求和结果中底层 Core 已不再提供的 `lastMinSeq` 字段。
-
 ### 兼容性变化
 
 - 保留既有群设置和角色枚举类型名作为兼容别名；现有调用无需修改。
-- 移除 `createImageMessage()`、`createSoundMessage()`、`createVideoMessage()` 和 `createFileMessage()`；本地媒体消息统一使用对应的 `FromFullPath` API。
-- `OpenIMCreateVideoMessageParams` 不再包含 `videoSourcePath`、`snapshotSourcePath`，`OpenIMCreateFileMessageParams` 不再包含 `fileSourcePath`。
+- 移除历史消息请求和结果中底层 Core 已不再提供的 `lastMinSeq` 字段，升级时请删除对该字段的读写。
+- 会话接收选项、群设置、成员角色和来源、申请处理结果、在线状态及平台等字段改用对应的命名枚举类型；使用宽泛 `number` 或 `Array<number>` 赋值时，请改用相应枚举常量或类型。
+- 现有方法名称和调用顺序保持不变。
 
 ## 0.2.2（2026-08-27）
 

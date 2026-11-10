@@ -80,7 +80,9 @@ function validatePluginPackage(pluginPackage, files, candidate) {
   if (pluginPackage.engines?.['uni-app'] !== '^5.23' || pluginPackage.engines?.['uni-app-x'] !== '^5.23') {
     throw new Error('Marketplace package must require uni-app and uni-app-x 5.23')
   }
-  const expectedPlatformVersions = { 'uni-app': pluginPackage.version, 'uni-app-x': '0.1.0' }
+  // Platform extVersion records the first supported implementation version.
+  // It does not advance with every plugin package release.
+  const expectedPlatformVersions = { 'uni-app': '0.2.2', 'uni-app-x': '0.1.0' }
   for (const clientName of ['uni-app', 'uni-app-x']) {
     const client = pluginPackage.uni_modules?.platforms?.client?.[clientName]
     const app = client?.app

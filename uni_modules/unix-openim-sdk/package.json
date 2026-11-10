@@ -1,7 +1,7 @@
 {
   "id": "unix-openim-sdk",
   "displayName": "Unix OpenIM SDK",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "OpenIM UTS 原生插件，为 uni-app 和 uni-app x 的 Android、iOS App 提供即时通讯能力。",
   "keywords": [
     "即时通讯",

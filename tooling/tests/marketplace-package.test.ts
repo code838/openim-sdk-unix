@@ -13,7 +13,7 @@ function buildPackage(outputDir: string) {
   execFileSync(process.execPath, ['scripts/build-public-marketplace-package.mjs', '--allow-dirty', '--output-dir', outputDir], {
     cwd: root,
   })
-  const manifestPath = join(outputDir, 'unix-openim-sdk-0.2.2-marketplace-manifest.json')
+  const manifestPath = join(outputDir, 'unix-openim-sdk-0.2.3-marketplace-manifest.json')
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
   return {
     archivePath: join(outputDir, manifest.archive.fileName),
@@ -28,7 +28,7 @@ test('Public marketplace package is deterministic and contains only the explicit
   try {
     const first = buildPackage(firstRoot)
     const second = buildPackage(secondRoot)
-    assert.equal(first.manifest.version, '0.2.2')
+    assert.equal(first.manifest.version, '0.2.3')
     assert.equal(first.manifest.status, 'release-pending')
     assert.equal(first.manifest.releaseApproved, false)
     assert.equal(first.manifest.artifactKind, 'dcloud-plugin')
@@ -50,7 +50,7 @@ test('Public marketplace package is deterministic and contains only the explicit
     assert.equal(entries.includes('uni_modules/unix-openim-sdk/.npmignore'), false)
 
     const sums = readFileSync(first.sumsPath, 'utf8')
-    assert.match(sums, new RegExp(`^${first.manifest.archive.sha256}  unix-openim-sdk-0\\.2\\.2-marketplace\\.zip`, 'm'))
+    assert.match(sums, new RegExp(`^${first.manifest.archive.sha256}  unix-openim-sdk-0\\.2\\.3-marketplace\\.zip`, 'm'))
   } finally {
     rmSync(firstRoot, { recursive: true, force: true })
     rmSync(secondRoot, { recursive: true, force: true })
@@ -66,7 +66,7 @@ test('Public marketplace plugin ships the repository license verbatim', () => {
 
 test('Public marketplace metadata declares both traditional uni-app and uni-app x', () => {
   const pluginPackage = JSON.parse(readFileSync(join(root, 'uni_modules/unix-openim-sdk/package.json'), 'utf8'))
-  assert.equal(pluginPackage.version, '0.2.2')
+  assert.equal(pluginPackage.version, '0.2.3')
   assert.equal(pluginPackage.engines['uni-app'], '^5.23')
   assert.equal(pluginPackage.engines['uni-app-x'], '^5.23')
   assert.equal(pluginPackage.dcloudext.declaration.data, '插件不采集任何数据')
