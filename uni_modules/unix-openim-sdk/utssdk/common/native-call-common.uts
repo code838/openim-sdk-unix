@@ -93,8 +93,15 @@ export type NativeParserHelpers = {
   isOptionalNumberField : (value : UTSJSONObject, key : string) => boolean
 }
 
+const operationIDPrefix : string = 'uts_' + Date.now().toString() + '_' + Math.floor(Math.random() * 1000000000).toString()
+let operationIDSequence : number = 0
+
 export function normalizeOperationID(operationID ?: string | null) : string {
-  return operationID != null ? operationID : ''
+  if (operationID != null && operationID.trim().length > 0) {
+    return operationID as string
+  }
+  operationIDSequence += 1
+  return operationIDPrefix + '_' + operationIDSequence.toString()
 }
 
 export function stringifyJSON(value : any | null) : string {

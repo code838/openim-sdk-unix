@@ -57,15 +57,14 @@ initSDK({
   dataDir: '',
   logLevel: 5,
   isLogStandardOutput: true
-}).then(() => login({
-  userID: 'your-user-id',
-  token: 'your-im-token'
-})).then(() => getLoginStatus())
+}).then(() => login('your-user-id', 'your-im-token')).then(() => getLoginStatus())
 ```
 
 通常保持 `dataDir` 为空字符串，让 SDK 使用 App 沙盒中的默认可写目录。不要把 `unifile://`、仅在前端有效的相对路径或不可写目录传给原生 Core。
 
 Promise 失败时 reject 的错误结构为 `{ errCode: number, errMsg: string }`。
+
+`operationID` 保持为接口的最后一个可选参数。省略、传入 `null`、空字符串或全空白字符串时，SDK 自动生成唯一请求标识；显式传入的有效标识原样保留，不会裁剪或替换。
 
 ## 事件订阅
 
