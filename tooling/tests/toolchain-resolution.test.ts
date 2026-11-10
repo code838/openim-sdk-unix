@@ -67,7 +67,7 @@ test('package and platform implementation versions match marketplace metadata', 
     root,
     'uni_modules/unix-openim-sdk/package.json',
   ), 'utf8'))
-  assert.equal(pluginPackage.version, '0.2.2')
+  assert.equal(pluginPackage.version, '0.2.3')
   const expectedVersions = { 'uni-app': '0.2.2', 'uni-app-x': '0.1.0' }
   for (const clientName of ['uni-app', 'uni-app-x'] as const) {
     const app = pluginPackage.uni_modules.platforms.client[clientName].app

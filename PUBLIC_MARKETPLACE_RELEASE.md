@@ -11,9 +11,9 @@
 - Tag 固定为 `unix-openim-sdk-public-v<version>`，必须指向 release PR 的 `main` merge commit。
 - DCloud 上传完成并核对后删除临时 release 分支；Tag 和发布产物永久保留。
 
-`0.2.1` 已于 2026-08-27 上传到 DCloud，但随后确认市场分发包误含本地原生制品，不能作为发布 authority，也不应继续导入使用。当前修正候选为 `0.2.2`，仍保持 `release-pending`、`releaseApproved=false`。市场分发事实不能替代正式运行证据或解除 compatibility ledger 阻断。
+`0.2.1` 已于 2026-08-27 上传到 DCloud，但随后确认市场分发包误含本地原生制品，不能作为发布 authority，也不应继续导入使用。修正包 `0.2.2` 已于同日发布。当前准备版本以插件 package.json 和 tooling/release/public-candidate.json 为准；市场分发事实不能替代正式运行证据或解除 compatibility ledger 阻断，也不自动改变 releaseApproved。
 
-DCloud 顶层市场版本与各运行形态的 `extVersion` 是不同维度，不能自动强制相等。当前 `0.2.2` 元数据中，传统 `uni-app` 支持 Vue、nvue、Android 和 iOS，其 Android/iOS `extVersion` 为 `0.2.2`；`uni-app x` Android/iOS 实现版本继续标记为 `0.1.0`。发布向导和自动校验必须保留这组已确认的平台元数据。
+DCloud 顶层市场版本与各运行形态的 `extVersion` 是不同维度，不能自动强制相等。传统 `uni-app` 支持 Vue、nvue、Android 和 iOS，其 Android/iOS `extVersion` 固定为 `0.2.2`；`uni-app x` Android/iOS 实现版本固定为 `0.1.0`。升级插件总版本不能改写这组已确认的平台元数据；发布向导和打包器均须保持它们。
 
 ## 市场包边界
 
