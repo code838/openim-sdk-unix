@@ -96,3 +96,45 @@ for (const platform of ['android', 'ios']) {
     assert.equal(captured[3], 'caller-operation')
   })
 }
+
+for (const platform of ['android', 'ios']) {
+  test(platform + ' real send-message options use generated or caller-preserved operation IDs', async () => {
+    const source = readFileSync(resolve(root, 'uni_modules/unix-openim-sdk/utssdk/app-' + platform + '/index.uts'), 'utf8')
+    const ast = ts.createSourceFile('index.ts', source, ts.ScriptTarget.Latest, true)
+    const reader = ast.statements.find((statement) => ts.isFunctionDeclaration(statement)
+      && statement.name?.text === 'readOperationID')
+    assert.ok(reader)
+    const { context } = fixture()
+    const captured: string[] = []
+    Object.assign(context, {
+      stringifyJSON: JSON.stringify,
+      stringifyOpenIMMessage: JSON.stringify,
+      readOfflinePushInfo: (): string => '',
+      readIsOnlineOnly: (): boolean => false,
+      rejectNativeError: (): void => assert.fail('unexpected native error'),
+      resolveSendMessageData: (_data: string, _method: string, resolve: (value: object) => void): void => resolve({}),
+      driverCallAsync: (_id: number, operationID: string, _request: string, resolve: (value: string) => void): void => {
+        captured.push(operationID)
+        resolve('{}')
+      },
+    })
+    for (const method of ['sendMessage', 'sendMessageNotOss']) {
+      const declaration = ast.statements.find((statement) => ts.isVariableStatement(statement)
+        && statement.declarationList.declarations.some((item) => item.name.getText(ast) === method))
+      assert.ok(declaration)
+      runInContext(ts.transpileModule(reader.getText(ast) + '\n'
+        + declaration.getText(ast).replace('export const ' + method, 'var ' + method), {
+        compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.None },
+      }).outputText, context)
+      const call = context[method] as (options: Record<string, unknown>) => Promise<object>
+      for (const operationID of [undefined, null, '', ' \t', 'caller-send-operation']) {
+        await call({ message: {}, recvID: 'fixture-peer', groupID: '', operationID })
+      }
+    }
+    const generated = captured.filter((value) => value !== 'caller-send-operation')
+    assert.equal(generated.length, 8)
+    assert.ok(generated.every((value) => value.length > 0))
+    assert.equal(new Set(generated).size, generated.length)
+    assert.equal(captured.filter((value) => value === 'caller-send-operation').length, 2)
+  })
+}

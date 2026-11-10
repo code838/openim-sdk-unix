@@ -448,7 +448,7 @@ function normalizeAndroidUploadFileParams(params : OpenIMUploadFileParams) : Ope
 }
 function readOfflinePushInfo(options : OpenIMSendMessageOptions) : string { return options.offlinePushInfo != null ? stringifyJSON(options.offlinePushInfo) : '{}' }
 function readIsOnlineOnly(options : OpenIMSendMessageOptions) : boolean { return options.isOnlineOnly != null ? options.isOnlineOnly as boolean : false }
-function readOperationID(options : OpenIMSendMessageOptions) : string { return options.operationID != null ? options.operationID as string : '' }
+function readOperationID(options : OpenIMSendMessageOptions) : string { return normalizeOperationID(options.operationID) }
 function appendPayloadField(payload : string, field : string) : string { return payload.length > 0 ? payload + ',' + field : field }
 function stringifyUpdateFriendsPayload(params : OpenIMUpdateFriendsParams) : string {
   let payload = ''
